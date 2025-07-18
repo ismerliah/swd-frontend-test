@@ -41,6 +41,7 @@ a {
   background: linear-gradient(to right, $color-green-1, $color-orange-1);
   height: 100vh;
   padding: 16px;
+  overflow: auto;
 }
 
 @media (prefers-color-scheme: dark) {
