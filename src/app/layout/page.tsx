@@ -38,7 +38,7 @@ export default function LayoutPage({}: Props) {
           </Col>
         </Row>
 
-        <Divider size="middle" />
+        <Divider size="middle" style={{ marginRight: 24}}/>
 
         <Flex gap="middle" vertical>
           <Row justify="center" gutter={16}>

@@ -7,6 +7,30 @@
     position: relative;
     display: flex;
     justify-content: center;
+    background-color: white;
+    width: 100%;
+    border: none;
+
+    &:hover {
+      cursor: pointer;
+      background-color: $color-orange-1;
+
+      .shape-square,
+      .shape-circle,
+      .shape-oval,
+      .shape-rectangle,
+      .shape-parallelogram {
+        background-color: white;
+      }
+
+      .shape-trapezoid {
+        border-color: transparent transparent white transparent;
+      }
+    }
+
+    &:active {
+      background-color: $color-green-1;
+    }
   }
 
   .badge {
@@ -25,8 +49,8 @@
 .shape-column {
   display: flex;
   flex-direction: rows;
-  gap: 16px;
-  align-items: center; // Optional, to center the shapes horizontally
+  gap: 60px;
+  align-items: center;
 }
 
 .shape {
