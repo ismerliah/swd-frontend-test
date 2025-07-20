@@ -1,8 +1,10 @@
 .main {
   display: flex;
+  flex-direction: column;
+  gap: 16px;
   justify-content: center;
+  align-items: center;
 }
-
 .form {
   border: 2px;
   border-color: dimgrey;
@@ -10,4 +12,7 @@
   border-radius: 8px;
   padding: 8px;
   width: 50vw;
+}
+.table {
+  width: 85vw;
 }

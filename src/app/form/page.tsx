@@ -4,6 +4,7 @@ import Title from "antd/es/typography/Title";
 import React from "react";
 import styles from "./page.module.scss";
 import { Button, Col, DatePicker, Form, Input, Radio, Row, Select } from "antd";
+import TableSection from "@/containers/form-page/table-section";
 
 type Props = {};
 
@@ -82,7 +83,13 @@ export default function FormPage({}: Props) {
                     },
                   ]}
                 >
-                  <DatePicker placeholder="mm//dd//yy" />
+                  <DatePicker
+                    placeholder="mm//dd//yy"
+                    format={{
+                      format: "MM-DD-YYYY",
+                      type: "mask",
+                    }}
+                  />
                 </Form.Item>
               </Col>
               <Col span={10}>
@@ -211,10 +218,10 @@ export default function FormPage({}: Props) {
               </Col>
             </Row>
 
-            {/* Passport No */}
+            {/* Password No */}
             <Row gutter={6}>
               <Col span={11}>
-                <Form.Item name="passport" label="Passport No">
+                <Form.Item name="password" label="Password No">
                   <Input />
                 </Form.Item>
               </Col>
@@ -254,6 +261,9 @@ export default function FormPage({}: Props) {
               </Col>
             </Row>
           </Form>
+        </div>
+        <div className={styles.table}>
+          <TableSection />
         </div>
       </main>
     </div>

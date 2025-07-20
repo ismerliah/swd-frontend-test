@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, Col, Divider, Flex, Row } from "antd";
 import Title from "antd/es/typography/Title";
 import styles from "./page.module.scss";
@@ -14,13 +16,16 @@ export default function LayoutPage({}: Props) {
       <main className={styles.main}>
         <Row justify="center" gutter={16}>
           <Col span={7}>
-            <Card className={styles.card}>
+            <Card
+              className={styles.card}
+              onClick={() => console.log("move left")}
+            >
               <div className={styles["shape-triangle-left"]}></div>
               <div className={styles.badge}>Move Shape</div>
             </Card>
           </Col>
           <Col span={10}>
-            <Card className={styles.card}>
+            <Card className={styles.card} onClick={() => console.log("swap")}>
               <div className={styles["shape-column"]}>
                 <div className={styles["shape-triangle-up"]}></div>
                 <div className={styles["shape-triangle-down"]}></div>
@@ -31,14 +36,17 @@ export default function LayoutPage({}: Props) {
           </Col>
 
           <Col span={7}>
-            <Card className={styles.card}>
+            <Card
+              className={styles.card}
+              onClick={() => console.log("move right")}
+            >
               <div className={styles["shape-triangle-right"]}></div>
               <div className={styles.badge}>Move Shape</div>
             </Card>
           </Col>
         </Row>
 
-        <Divider size="middle" style={{ marginRight: 24}}/>
+        <Divider size="middle" style={{ marginRight: 24 }} />
 
         <Flex gap="middle" vertical>
           <Row justify="center" gutter={16}>
