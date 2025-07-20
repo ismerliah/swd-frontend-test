@@ -1,18 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface formState {
-  users: string[];
+  users: string[]
 }
 
 const initialState: formState = {
-  users: [],
+  users: []
 };
 
 export const formSlice = createSlice({
   name: "form",
   initialState,
-  reducers: {},
+  reducers: {
+    addUser: (state, action) => {
+        state.users.push(action.payload);
+        localStorage.setItem("users", JSON.stringify(state.users));
+    }
+  },
 });
 
-export const {} = formSlice.actions;
+export const { addUser } = formSlice.actions;
 export default formSlice.reducer;

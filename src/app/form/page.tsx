@@ -6,6 +6,8 @@ import styles from "./page.module.scss";
 import { Button, Col, DatePicker, Form, Input, Radio, Row, Select } from "antd";
 import TableSection from "@/containers/form-page/table-section";
 import dayjs from "dayjs";
+import { useAppDispatch, useAppSelector } from "@/hook";
+import { addUser } from "@/lib/feature/form/formSlice";
 
 interface UserInterface {
   title: string;
@@ -21,15 +23,19 @@ interface UserInterface {
 }
 
 export default function FormPage() {
-  const [form] = Form.useForm();
+  const users: string[] = useAppSelector((state) => state.form.users);
+  const dispatch = useAppDispatch();
 
   const onFinish = (fieldValue: UserInterface) => {
     const values = {
       ...fieldValue,
       birthday: fieldValue["birthday"].format("MM-DD-YYYY"),
     };
-    console.log(values);
-    form.resetFields();
+    dispatch(addUser(values));
+
+    console.log("users", users);
+    console.log("value", values);
+    // form.resetFields();
   };
   return (
     <div className="page">
@@ -38,7 +44,7 @@ export default function FormPage() {
       </header>
       <main className={styles.main}>
         <div className={styles.form}>
-          <Form form={form} onFinish={onFinish}>
+          <Form onFinish={onFinish}>
             {/* Title , FirstName , LastName */}
             <Row gutter={6}>
               <Col span={4}>
