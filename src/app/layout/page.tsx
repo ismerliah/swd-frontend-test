@@ -15,6 +15,8 @@ export default function LayoutPage() {
     "parallelogram",
   ]);
 
+  const [swap, isSwap] = useState<boolean>();
+
   const moveLeft = () => {
     console.log("move left");
     const newShapeArray = [...shapeArray];
@@ -37,13 +39,25 @@ export default function LayoutPage() {
     console.log(newShapeArray);
   };
 
-  const swapGrid = () => {
+  const swapPosition = () => {
     console.log("swap");
+    isSwap((prev) => !prev);
   };
 
-  const shuffleShape = () => {
-    console.log("shuffle");
+  const shuffle = (array: string[]) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const random = Math.floor(Math.random() * (i + 1));
+      [array[i], array[random]] = [array[random], array[i]];
+    }
+    return array
   };
+
+  const randomShape = () => {
+    const newPosition = shuffle(shapeArray);
+    setShapeArray([...newPosition])
+    console.log(shapeArray)
+  }
+
   return (
     <div className="page">
       <header>
@@ -58,7 +72,7 @@ export default function LayoutPage() {
             </Card>
           </Col>
           <Col span={10}>
-            <Card className={styles.card} onClick={swapGrid}>
+            <Card className={styles.card} onClick={swapPosition}>
               <div className={styles["shape-column"]}>
                 <div className={styles["shape-triangle-up"]}></div>
                 <div className={styles["shape-triangle-down"]}></div>
@@ -79,19 +93,19 @@ export default function LayoutPage() {
         <Divider size="middle" style={{ marginRight: 24 }} />
 
         <Flex gap="middle" vertical>
-          <Row justify="center" gutter={16}>
+          <Row justify={swap ? "center" : "end"} gutter={16}>
             {shapeArray.slice(0, 3).map((shape, index) => (
               <Col span={7} key={index}>
-                <Card className={styles.card}>
+                <Card className={styles.card} onClick={randomShape}>
                   <div className={styles[`shape-${shape}`]}></div>
                 </Card>
               </Col>
             ))}
           </Row>
-          <Row justify="end" gutter={16}>
+          <Row justify={swap ? "end" : "center"} gutter={16}>
             {shapeArray.slice(3).map((shape, index) => (
               <Col span={7} key={index}>
-                <Card className={styles.card}>
+                <Card className={styles.card} onClick={randomShape}>
                   <div className={styles[`shape-${shape}`]}></div>
                 </Card>
               </Col>
