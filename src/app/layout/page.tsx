@@ -3,11 +3,40 @@
 import { Card, Col, Divider, Flex, Row } from "antd";
 import Title from "antd/es/typography/Title";
 import styles from "./page.module.scss";
-import React from "react";
+import React, { useState } from "react";
 
-type Props = {};
+export default function LayoutPage() {
+  const [shapeArray, setShapeArray] = useState([
+    "square",
+    "circle",
+    "oval",
+    "trapezoid",
+    "rectangle",
+    "parallelogram",
+  ]);
 
-export default function LayoutPage({}: Props) {
+  const moveLeft = () => {
+    console.log("move left");
+    const newShapeArray = [...shapeArray];
+    const first = newShapeArray.shift();
+    if (first) {
+      newShapeArray.push(first);
+    }
+    setShapeArray(newShapeArray);
+    console.log(newShapeArray);
+  };
+
+  const moveRight = () => {
+    console.log("move right");
+  };
+
+  const swapGrid = () => {
+    console.log("swap");
+  };
+
+  const shuffleShape = () => {
+    console.log("shuffle");
+  };
   return (
     <div className="page">
       <header>
@@ -16,16 +45,13 @@ export default function LayoutPage({}: Props) {
       <main className={styles.main}>
         <Row justify="center" gutter={16}>
           <Col span={7}>
-            <Card
-              className={styles.card}
-              onClick={() => console.log("move left")}
-            >
+            <Card className={styles.card} onClick={moveLeft}>
               <div className={styles["shape-triangle-left"]}></div>
               <div className={styles.badge}>Move Shape</div>
             </Card>
           </Col>
           <Col span={10}>
-            <Card className={styles.card} onClick={() => console.log("swap")}>
+            <Card className={styles.card} onClick={moveRight}>
               <div className={styles["shape-column"]}>
                 <div className={styles["shape-triangle-up"]}></div>
                 <div className={styles["shape-triangle-down"]}></div>
@@ -36,10 +62,7 @@ export default function LayoutPage({}: Props) {
           </Col>
 
           <Col span={7}>
-            <Card
-              className={styles.card}
-              onClick={() => console.log("move right")}
-            >
+            <Card className={styles.card} onClick={swapGrid}>
               <div className={styles["shape-triangle-right"]}></div>
               <div className={styles.badge}>Move Shape</div>
             </Card>
@@ -50,38 +73,22 @@ export default function LayoutPage({}: Props) {
 
         <Flex gap="middle" vertical>
           <Row justify="center" gutter={16}>
-            <Col span={7}>
-              <Card className={styles.card}>
-                <div className={styles["shape-square"]}></div>
-              </Card>
-            </Col>
-            <Col span={7}>
-              <Card className={styles.card}>
-                <div className={styles["shape-circle"]}></div>
-              </Card>
-            </Col>
-            <Col span={7}>
-              <Card className={styles.card}>
-                <div className={styles["shape-oval"]}></div>
-              </Card>
-            </Col>
+            {shapeArray.slice(0, 3).map((shape, index) => (
+              <Col span={7} key={index}>
+                <Card className={styles.card}>
+                  <div className={styles[`shape-${shape}`]}></div>
+                </Card>
+              </Col>
+            ))}
           </Row>
           <Row justify="end" gutter={16}>
-            <Col span={7}>
-              <Card className={styles.card}>
-                <div className={styles["shape-trapezoid"]}></div>
-              </Card>
-            </Col>
-            <Col span={7}>
-              <Card className={styles.card}>
-                <div className={styles["shape-rectangle"]}></div>
-              </Card>
-            </Col>
-            <Col span={7}>
-              <Card className={styles.card}>
-                <div className={styles["shape-parallelogram"]}></div>
-              </Card>
-            </Col>
+            {shapeArray.slice(3).map((shape, index) => (
+              <Col span={7} key={index}>
+                <Card className={styles.card}>
+                  <div className={styles[`shape-${shape}`]}></div>
+                </Card>
+              </Col>
+            ))}
           </Row>
         </Flex>
       </main>
