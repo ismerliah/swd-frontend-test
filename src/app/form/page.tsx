@@ -6,13 +6,25 @@ import styles from "./page.module.scss";
 import { Button, Col, DatePicker, Form, Input, Radio, Row, Select } from "antd";
 import TableSection from "@/containers/form-page/table-section";
 
-type Props = {};
+interface UserInterface {
+  title: string;
+  firstname: string;
+  lastname: string;
+  birthday: Date;
+  nationality: string;
+  citizen_id: number[];
+  gender: string;
+  mobile_phone: string[];
+  passport: string;
+  salary: string;
+}
 
-export default function FormPage({}: Props) {
+export default function FormPage() {
   const [form] = Form.useForm();
 
-  const onFinish = (values: any) => {
+  const onFinish = (values: UserInterface) => {
     console.log(values);
+    form.resetFields();
   };
   return (
     <div className="page">
@@ -21,11 +33,7 @@ export default function FormPage({}: Props) {
       </header>
       <main className={styles.main}>
         <div className={styles.form}>
-          <Form
-            form={form}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-          >
+          <Form form={form} onFinish={onFinish}>
             {/* Title , FirstName , LastName */}
             <Row gutter={6}>
               <Col span={4}>
@@ -33,7 +41,7 @@ export default function FormPage({}: Props) {
                   name="title"
                   label="Title"
                   rules={[
-                    { required: true, message: "Please input your Firstname" },
+                    { required: true, message: "Please input your title!" },
                   ]}
                 >
                   <Select
@@ -51,7 +59,7 @@ export default function FormPage({}: Props) {
                   label="Firstname"
                   name="firstname"
                   rules={[
-                    { required: true, message: "Please input your Firstname" },
+                    { required: true, message: "Please input your firstname!" },
                   ]}
                 >
                   <Input />
@@ -62,7 +70,7 @@ export default function FormPage({}: Props) {
                   label="Lastname"
                   name="lastname"
                   rules={[
-                    { required: true, message: "Please input your Lastname" },
+                    { required: true, message: "Please input your lastname!" },
                   ]}
                 >
                   <Input />
@@ -79,7 +87,7 @@ export default function FormPage({}: Props) {
                   rules={[
                     {
                       required: true,
-                      message: "Please input your Birthday date.",
+                      message: "Please input your birthday date!",
                     },
                   ]}
                 >
@@ -99,7 +107,7 @@ export default function FormPage({}: Props) {
                   rules={[
                     {
                       required: true,
-                      message: "Please input your Nationality.",
+                      message: "Please input your nationality.",
                     },
                   ]}
                 >
@@ -116,62 +124,71 @@ export default function FormPage({}: Props) {
             </Row>
 
             {/* citizen */}
-            <Row gutter={6}>
-              <Col span={4}>
-                <Form.Item name="citizen-1" label="CitizenID">
-                  <Input />
-                </Form.Item>
-              </Col>
-              <Col span={1} style={{ textAlign: "center" }}>
-                <Title level={5}>-</Title>
-              </Col>
-              <Col span={4}>
-                <Form.Item name="citizen-2">
-                  <Input />
-                </Form.Item>
-              </Col>
-              <Col span={1} style={{ textAlign: "center" }}>
-                <Title level={5}>-</Title>
-              </Col>
-              <Col span={4}>
-                <Form.Item name="citizen-3">
-                  <Input />
-                </Form.Item>
-              </Col>
-              <Col span={1} style={{ textAlign: "center" }}>
-                <Title level={5}>-</Title>
-              </Col>
-              <Col span={3}>
-                <Form.Item name="citizen-4">
-                  <Input />
-                </Form.Item>
-              </Col>
-              <Col span={1} style={{ textAlign: "center" }}>
-                <Title level={5}>-</Title>
-              </Col>
-              <Col span={2}>
-                <Form.Item name="citizen-5">
-                  <Input />
-                </Form.Item>
-              </Col>
-            </Row>
+            <Form.Item label="CitizenID">
+              <Row gutter={6}>
+                <Col span={2}>
+                  <Form.Item name={["citizen_id", "first"]} noStyle>
+                    <Input />
+                  </Form.Item>
+                </Col>
+
+                <Col span={1} style={{ textAlign: "center" }}>
+                  <Title level={5}>-</Title>
+                </Col>
+
+                <Col span={4}>
+                  <Form.Item name={["citizen_id", "second"]} noStyle>
+                    <Input />
+                  </Form.Item>
+                </Col>
+
+                <Col span={1} style={{ textAlign: "center" }}>
+                  <Title level={5}>-</Title>
+                </Col>
+
+                <Col span={4}>
+                  <Form.Item name={["citizen_id", "third"]} noStyle>
+                    <Input />
+                  </Form.Item>
+                </Col>
+                <Col span={1} style={{ textAlign: "center" }}>
+                  <Title level={5}>-</Title>
+                </Col>
+
+                <Col span={3}>
+                  <Form.Item name={["citizen_id", "forth"]} noStyle>
+                    <Input />
+                  </Form.Item>
+                </Col>
+
+                <Col span={1} style={{ textAlign: "center" }}>
+                  <Title level={5}>-</Title>
+                </Col>
+
+                <Col span={2}>
+                  <Form.Item name={["citizen_id", "fifth"]} noStyle>
+                    <Input />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Form.Item>
 
             {/* Gender */}
             <Row gutter={6}>
-              <Col span={8}>
+              <Col span={24}>
                 <Form.Item
                   name="gender"
                   label="Gender"
                   rules={[
-                    { required: true, message: "Please select your Gender" },
+                    { required: true, message: "Please select your gender!" },
                   ]}
                 >
                   <Radio.Group
                     name="gender"
                     options={[
-                      { value: 1, label: "Male" },
-                      { value: 2, label: "Female" },
-                      { value: 3, label: "Unsex" },
+                      { value: "Male", label: "Male" },
+                      { value: "Female", label: "Female" },
+                      { value: "Unsex", label: "Unsex" },
                     ]}
                   />
                 </Form.Item>
@@ -179,49 +196,54 @@ export default function FormPage({}: Props) {
             </Row>
 
             {/* Mobile phone */}
-            <Row gutter={6}>
-              <Col span={8}>
-                <Form.Item
-                  name="code"
-                  label="Mobile Phone"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select your code country.",
-                    },
-                  ]}
-                >
-                  <Select
-                    options={[
-                      { value: "+66", label: "+66" },
-                      { value: "+1", label: "+1" },
-                      { value: "+33", label: "+33" },
+            <Form.Item label="Mobile Phone">
+              <Row gutter={6}>
+                <Col span={4}>
+                  <Form.Item
+                    name={["mobile_phone", "code"]}
+                    noStyle
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select your country code!",
+                      },
                     ]}
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={1} style={{ textAlign: "center" }}>
-                <Title level={5}>-</Title>
-              </Col>
-              <Col span={9}>
-                <Form.Item
-                  name="phone"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please fill your Mobile Phone.",
-                    },
-                  ]}
-                >
-                  <Input />
-                </Form.Item>
-              </Col>
-            </Row>
+                  >
+                    <Select
+                      options={[
+                        { value: "+66", label: "+66" },
+                        { value: "+1", label: "+1" },
+                        { value: "+33", label: "+33" },
+                      ]}
+                    />
+                  </Form.Item>
+                </Col>
 
-            {/* Password No */}
+                <Col span={1} style={{ textAlign: "center" }}>
+                  <Title level={5}>-</Title>
+                </Col>
+
+                <Col span={5}>
+                  <Form.Item
+                    name={["mobile_phone", "phone"]}
+                    noStyle
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your mobile phone!",
+                      },
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Form.Item>
+
+            {/* Passport No */}
             <Row gutter={6}>
               <Col span={11}>
-                <Form.Item name="password" label="Password No">
+                <Form.Item name="passport" label="Passport No">
                   <Input />
                 </Form.Item>
               </Col>
@@ -236,7 +258,7 @@ export default function FormPage({}: Props) {
                   rules={[
                     {
                       required: true,
-                      message: "Please fill your expect salary.",
+                      message: "Please input your expect salary!",
                     },
                   ]}
                 >
