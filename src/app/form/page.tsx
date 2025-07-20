@@ -5,12 +5,13 @@ import React from "react";
 import styles from "./page.module.scss";
 import { Button, Col, DatePicker, Form, Input, Radio, Row, Select } from "antd";
 import TableSection from "@/containers/form-page/table-section";
+import dayjs from "dayjs";
 
 interface UserInterface {
   title: string;
   firstname: string;
   lastname: string;
-  birthday: Date;
+  birthday: dayjs.Dayjs;
   nationality: string;
   citizen_id: number[];
   gender: string;
@@ -22,7 +23,11 @@ interface UserInterface {
 export default function FormPage() {
   const [form] = Form.useForm();
 
-  const onFinish = (values: UserInterface) => {
+  const onFinish = (fieldValue: UserInterface) => {
+    const values = {
+      ...fieldValue,
+      birthday: fieldValue["birthday"].format("MM-DD-YYYY"),
+    };
     console.log(values);
     form.resetFields();
   };
@@ -196,7 +201,7 @@ export default function FormPage() {
             </Row>
 
             {/* Mobile phone */}
-            <Form.Item label="Mobile Phone">
+            <Form.Item label="Mobile Phone" required>
               <Row gutter={6}>
                 <Col span={4}>
                   <Form.Item
