@@ -28,6 +28,13 @@ export default function LayoutPage() {
 
   const moveRight = () => {
     console.log("move right");
+    const newShapeArray = [...shapeArray];
+    const last = newShapeArray.pop();
+    if (last) {
+      newShapeArray.unshift(last);
+    }
+    setShapeArray(newShapeArray);
+    console.log(newShapeArray);
   };
 
   const swapGrid = () => {
@@ -51,7 +58,7 @@ export default function LayoutPage() {
             </Card>
           </Col>
           <Col span={10}>
-            <Card className={styles.card} onClick={moveRight}>
+            <Card className={styles.card} onClick={swapGrid}>
               <div className={styles["shape-column"]}>
                 <div className={styles["shape-triangle-up"]}></div>
                 <div className={styles["shape-triangle-down"]}></div>
@@ -62,7 +69,7 @@ export default function LayoutPage() {
           </Col>
 
           <Col span={7}>
-            <Card className={styles.card} onClick={swapGrid}>
+            <Card className={styles.card} onClick={moveRight}>
               <div className={styles["shape-triangle-right"]}></div>
               <div className={styles.badge}>Move Shape</div>
             </Card>
