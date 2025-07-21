@@ -83,11 +83,11 @@ export default function FormPage() {
   return (
     <div className="page">
       <header className="header">
-        <Title level={2}>Form & Table</Title>
+        <Title level={2}>{t("Form & Table")}</Title>
         <LanguageSwitcher />
       </header>
       <Flex justify="end">
-        <Button href="/">Home</Button>
+        <Button href="/">{t("Home")}</Button>
       </Flex>
       <main className={styles.main}>
         <div className={styles.form}>
@@ -97,24 +97,24 @@ export default function FormPage() {
               <Col span={4}>
                 <Form.Item
                   name="title"
-                  label={t("HomePage")}
+                  label={t("Title")}
                   rules={[
                     { required: true, message: "Please input your title!" },
                   ]}
                 >
                   <Select
-                    placeholder="Title"
+                    placeholder={t("Title")}
                     options={[
-                      { value: "mr", label: "Mr." },
-                      { value: "mrs", label: "Mrs." },
-                      { value: "ms", label: "Ms." },
+                      { value: "mr", label: `${t("Mr")}` },
+                      { value: "mrs", label: `${t("Mrs")}` },
+                      { value: "ms", label: `${t("Ms")}` },
                     ]}
                   />
                 </Form.Item>
               </Col>
               <Col span={10}>
                 <Form.Item
-                  label="Firstname"
+                  label={t("Firstname")}
                   name="firstname"
                   rules={[
                     { required: true, message: "Please input your firstname!" },
@@ -125,7 +125,7 @@ export default function FormPage() {
               </Col>
               <Col span={10}>
                 <Form.Item
-                  label="Lastname"
+                  label={t("Lastname")}
                   name="lastname"
                   rules={[
                     { required: true, message: "Please input your lastname!" },
@@ -141,7 +141,7 @@ export default function FormPage() {
               <Col span={6}>
                 <Form.Item
                   name="birthday"
-                  label="Birthday"
+                  label={t("Birthday")}
                   rules={[
                     {
                       required: true,
@@ -150,7 +150,7 @@ export default function FormPage() {
                   ]}
                 >
                   <DatePicker
-                    placeholder="mm//dd//yy"
+                    placeholder={t("Month Day Year")}
                     format={{
                       format: "MM-DD-YYYY",
                       type: "mask",
@@ -161,7 +161,7 @@ export default function FormPage() {
               <Col span={10}>
                 <Form.Item
                   name="nationality"
-                  label="Nationality"
+                  label={t("Nationality")}
                   rules={[
                     {
                       required: true,
@@ -170,11 +170,11 @@ export default function FormPage() {
                   ]}
                 >
                   <Select
-                    placeholder="-- Please Select --"
+                    placeholder={t("Pls Select")}
                     options={[
-                      { value: "Thai", label: "Thai" },
-                      { value: "France", label: "France" },
-                      { value: "American", label: "American" },
+                      { value: "Thai", label: `${t("Thai")}` },
+                      { value: "France", label: `${t("France")}` },
+                      { value: "America", label: `${t("America")}` },
                     ]}
                   />
                 </Form.Item>
@@ -182,7 +182,7 @@ export default function FormPage() {
             </Row>
 
             {/* citizen */}
-            <Form.Item label="CitizenID">
+            <Form.Item label={t("CitizenID")}>
               <Row gutter={6}>
                 <Col span={2}>
                   <Form.Item name={["citizen_id", "first"]} noStyle>
@@ -236,7 +236,7 @@ export default function FormPage() {
               <Col span={24}>
                 <Form.Item
                   name="gender"
-                  label="Gender"
+                  label={t("Gender")}
                   rules={[
                     { required: true, message: "Please select your gender!" },
                   ]}
@@ -244,9 +244,9 @@ export default function FormPage() {
                   <Radio.Group
                     name="gender"
                     options={[
-                      { value: "Male", label: "Male" },
-                      { value: "Female", label: "Female" },
-                      { value: "Unsex", label: "Unsex" },
+                      { value: "Male", label: `${t("Male")}` },
+                      { value: "Female", label: `${t("Female")}` },
+                      { value: "Unsex", label: `${t("Unsex")}` },
                     ]}
                   />
                 </Form.Item>
@@ -254,7 +254,7 @@ export default function FormPage() {
             </Row>
 
             {/* Mobile phone */}
-            <Form.Item label="Mobile Phone" required>
+            <Form.Item label={t("Mobile Phone")} required>
               <Row gutter={6}>
                 <Col span={4}>
                   <Form.Item
@@ -301,7 +301,7 @@ export default function FormPage() {
             {/* Passport No */}
             <Row gutter={6}>
               <Col span={11}>
-                <Form.Item name="passport" label="Passport No">
+                <Form.Item name="passport" label={t("Passport")}>
                   <Input />
                 </Form.Item>
               </Col>
@@ -312,7 +312,7 @@ export default function FormPage() {
               <Col span={11}>
                 <Form.Item
                   name="salary"
-                  label="Expected Salary"
+                  label={t("Salary")}
                   rules={[
                     {
                       required: true,
@@ -327,7 +327,7 @@ export default function FormPage() {
               <Col span={4} offset={4}>
                 <Form.Item>
                   <Button variant="outlined" htmlType="reset">
-                    RESET
+                    {t("Reset")}
                   </Button>
                 </Form.Item>
               </Col>
@@ -335,7 +335,7 @@ export default function FormPage() {
               <Col span={4}>
                 <Form.Item>
                   <Button variant="outlined" htmlType="submit">
-                    SUBMIT
+                    {t("Submit")}
                   </Button>
                 </Form.Item>
               </Col>

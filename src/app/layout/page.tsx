@@ -5,8 +5,10 @@ import Title from "antd/es/typography/Title";
 import styles from "./page.module.scss";
 import React, { useState } from "react";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useTranslation } from "react-i18next";
 
 export default function LayoutPage() {
+  const { t } = useTranslation();
   const [shapeArray, setShapeArray] = useState([
     "square",
     "circle",
@@ -62,18 +64,18 @@ export default function LayoutPage() {
   return (
     <div className="page">
       <header className="header">
-        <Title level={2}>Layout & Style</Title>
+        <Title level={2}>{t("Layout & Style")}</Title>
         <LanguageSwitcher />
       </header>
       <Flex justify="end">
-        <Button href="/">Home</Button>
+        <Button href="/">{t("Home")}</Button>
       </Flex>
       <main className={styles.main}>
         <Row justify="center" gutter={16}>
           <Col span={7}>
             <Card className={styles.card} onClick={moveLeft}>
               <div className={styles["shape-triangle-left"]}></div>
-              <div className={styles.badge}>Move Shape</div>
+              <div className={styles.badge}>{t("Move Shape")}</div>
             </Card>
           </Col>
           <Col span={10}>
@@ -83,14 +85,14 @@ export default function LayoutPage() {
                 <div className={styles["shape-triangle-down"]}></div>
               </div>
 
-              <div className={styles.badge}>Move Position</div>
+              <div className={styles.badge}>{t("Move Position")}</div>
             </Card>
           </Col>
 
           <Col span={7}>
             <Card className={styles.card} onClick={moveRight}>
               <div className={styles["shape-triangle-right"]}></div>
-              <div className={styles.badge}>Move Shape</div>
+              <div className={styles.badge}>{t("Move Shape")}</div>
             </Card>
           </Col>
         </Row>

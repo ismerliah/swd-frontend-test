@@ -17,6 +17,7 @@ import {
   TableProps,
 } from "antd";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface UserInterface {
   id: number;
@@ -43,6 +44,7 @@ interface DataType {
 }
 
 function TableSection() {
+  const { t } = useTranslation();
   const users = useAppSelector((state) => state.form.users);
   const isDelete = useAppSelector((state) => state.form.isDelete);
   const dispatch = useAppDispatch();
@@ -73,23 +75,27 @@ function TableSection() {
 
   const columns = [
     {
-      title: "Name",
+      title: `${t("Name")}`,
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Gender",
+      title: `${t("Gender")}`,
       dataIndex: "gender",
       key: "gender",
     },
     {
-      title: "Mobile Phone",
+      title: `${t("Mobile Phone")}`,
       dataIndex: "mobile_phone",
       key: "mobile_phone",
     },
-    { title: "Nationality", dataIndex: "nationality", key: "nationality" },
     {
-      title: "MANAGE",
+      title: `${t("Nationality")}`,
+      dataIndex: "nationality",
+      key: "nationality",
+    },
+    {
+      title: `${t("Manage")}`,
       key: "manage",
       render: (record: any) => (
         <Space size="middle">
@@ -98,7 +104,7 @@ function TableSection() {
             variant="text"
             onClick={() => handleEdit(record.key + 1)}
           >
-            EDIT
+            {t("Edit")}
           </Button>
           <Button
             color="default"
@@ -107,7 +113,7 @@ function TableSection() {
               handleDelete(record.key + 1);
             }}
           >
-            DELETE
+            {t("Delete")}
           </Button>
         </Space>
       ),
@@ -118,9 +124,9 @@ function TableSection() {
     users?.map((user: any, index: any) => ({
       key: index,
       name: `${user.firstname} ${user.lastname}`,
-      gender: user.gender,
-      mobile_phone: `${user.mobile_phone.code}${user.mobile_phone.phone}`,
-      nationality: user.nationality,
+      gender: t(user.gender),
+      mobile_phone: `${t(user.mobile_phone.code)}${user.mobile_phone.phone}`,
+      nationality: t(user.nationality),
     })) ?? [];
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
@@ -140,14 +146,14 @@ function TableSection() {
     if (type === "prev") {
       return (
         <Button size="small" variant="link" color="default">
-          PREV
+          {t("Prev")}
         </Button>
       );
     }
     if (type === "next") {
       return (
         <Button size="small" variant="link" color="default">
-          NEXT
+          {t("Next")}
         </Button>
       );
     }
@@ -157,9 +163,11 @@ function TableSection() {
     <Flex gap="middle" vertical>
       <Flex align="center" gap="small">
         <Checkbox checked={isChecked} onClick={handleSelectAll}>
-          Select All
+          {t("Select All")}
         </Checkbox>
-        <Button variant="outlined" onClick={handleDeleteAll}>DELETE</Button>
+        <Button variant="outlined" onClick={handleDeleteAll}>
+          DELETE
+        </Button>
       </Flex>
       <Table
         rowSelection={rowSelection}
