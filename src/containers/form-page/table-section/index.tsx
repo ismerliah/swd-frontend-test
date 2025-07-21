@@ -2,8 +2,8 @@
 
 import { useAppDispatch, useAppSelector } from "@/hook";
 import {
+  deleteAll,
   deleteUser,
-  setDelete,
   setSelectedUser,
 } from "@/lib/feature/form/formSlice";
 import {
@@ -13,30 +13,16 @@ import {
   PaginationProps,
   Space,
   Table,
-  TableColumnsType,
   TableProps,
 } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-
-interface UserInterface {
-  id: number;
-  title: string;
-  firstname: string;
-  lastname: string;
-  birthday: string;
-  nationality: string;
-  citizen_id: string[];
-  gender: string;
-  mobile_phone: string[];
-  passport: string;
-  salary: string;
-}
 
 type TableRowSelection<T extends object = object> =
   TableProps<T>["rowSelection"];
 
 interface DataType {
+  key: React.Key;
   name: string;
   gender: string;
   mobile_phone: string;
@@ -46,31 +32,31 @@ interface DataType {
 function TableSection() {
   const { t } = useTranslation();
   const users = useAppSelector((state) => state.form.users);
-  const isDelete = useAppSelector((state) => state.form.isDelete);
   const dispatch = useAppDispatch();
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [isChecked, setISChecked] = useState(false);
 
   const handleSelectAll = () => {
-    const allRowData = dataSource.map((item: any) => item.key);
+    const allRowData = dataSource.map((item: { key: React.Key }) => item.key);
     setSelectedRowKeys(isChecked ? [] : allRowData);
     setISChecked(!isChecked);
   };
 
   const handleDeleteAll = () => {
-    localStorage.removeItem("users");
-  }
+    if (isChecked && selectedRowKeys.length > 0) {
+      dispatch(deleteAll());
+      window.alert("Delete Success");
+    }
+  };
 
-  const handleEdit = (record: any) => {
+  const handleEdit = (record: number) => {
     console.log("Edit");
     dispatch(setSelectedUser(record));
   };
 
-  const handleDelete = async (record: any) => {
-    await dispatch(deleteUser(record));
-    // dispatch(setDelete(true))
+  const handleDelete = (record: number) => {
+    dispatch(deleteUser(record));
     window.alert("Delete Success");
-    // dispatch(setDelete(false));
   };
 
   const columns = [
@@ -97,7 +83,7 @@ function TableSection() {
     {
       title: `${t("Manage")}`,
       key: "manage",
-      render: (record: any) => (
+      render: (record: { key: number }) => (
         <Space size="middle">
           <Button
             color="default"
@@ -178,7 +164,7 @@ function TableSection() {
           position: ["topRight"],
           itemRender: itemRender,
           size: "default",
-          pageSize: 10,
+          pageSize: 3,
         }}
       />
     </Flex>

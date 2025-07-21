@@ -1,18 +1,33 @@
 import { createSlice } from "@reduxjs/toolkit";
+import dayjs from "dayjs";
+
+interface UserInterface {
+  id: number;
+  title: string;
+  firstname: string;
+  lastname: string;
+  birthday: dayjs.Dayjs;
+  nationality: string;
+  citizen_id: number[];
+  gender: string;
+  mobile_phone: string[];
+  passport: string;
+  salary: string;
+}
+
 
 interface formState {
-  users: any[];
+  users: UserInterface[];
   selectedUser: any;
-  isDelete: boolean;
 }
 
 const loadFromStorage = () => {
   try {
-    const serializedData = localStorage.getItem("users");
-    if (serializedData === null) {
+    const Data = localStorage.getItem("users");
+    if (Data === null) {
       return [];
     }
-    return JSON.parse(serializedData);
+    return JSON.parse(Data);
   } catch (error) {
     console.error("Error loading from localStorage:", error);
     return [];
@@ -22,7 +37,6 @@ const loadFromStorage = () => {
 const initialState: formState = {
   users: loadFromStorage(),
   selectedUser: 0,
-  isDelete: false,
 };
 
 export const formSlice = createSlice({
@@ -32,7 +46,6 @@ export const formSlice = createSlice({
     setSelectedUser: (state, action) => {
       state.selectedUser = action.payload;
     },
-    loadUser: (state, action) => {},
     addUser: (state, action) => {
       state.users.push(action.payload);
       const prevData = localStorage.getItem("users") || "[]";
@@ -42,39 +55,30 @@ export const formSlice = createSlice({
     },
     editUser: (state, action) => {
       const { id, ...editedData } = action.payload;
-
-      const getData = localStorage.getItem("users") || "[]";
-      const allUser = JSON.parse(getData);
-      const index = allUser.findIndex((user) => user.id === id);
-
-      if (index !== -1) {
-        allUser[index] = {
-          ...allUser[index],
+      const userIndex = state.users.findIndex((user: { id: number }) => user.id === id);
+      if (userIndex !== -1) {
+        state.users[userIndex] = {
+          ...state.users[userIndex],
           ...editedData,
           id: id,
         };
-        localStorage.setItem("users", JSON.stringify(allUser));
       }
+      localStorage.setItem("users", JSON.stringify(state.users));
     },
-    setDelete: (state, action) => {
-      state.isDelete = action.payload;
-    },
-
     deleteUser: (state, action) => {
       const id = parseInt(action.payload);
-      console.log(id);
-      const getData = localStorage.getItem("users") || "[]";
-      const allUser = JSON.parse(getData);
-      const user = allUser.find((user) => user.id === id);
-      console.log(user);
-      if (user) {
-        const updatedArray = allUser.filter((item) => item.id != id);
-        localStorage.setItem("users", JSON.stringify(updatedArray));
-      }
+      state.users = state.users.filter(
+        (user: { id: number }) => user.id !== id
+      );
+      localStorage.setItem("users", JSON.stringify(state.users));
     },
+    deleteAll: (state) => {
+      state.users = [];
+      localStorage.removeItem("users");
+    }
   },
 });
 
-export const { setSelectedUser, addUser, editUser, deleteUser, setDelete } =
+export const { setSelectedUser, addUser, editUser, deleteUser, deleteAll } =
   formSlice.actions;
 export default formSlice.reducer;

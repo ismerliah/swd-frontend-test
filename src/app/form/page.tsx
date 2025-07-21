@@ -15,7 +15,7 @@ import {
   Select,
 } from "antd";
 import TableSection from "@/containers/form-page/table-section";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { useAppDispatch, useAppSelector } from "@/hook";
 import {
   addUser,
@@ -26,6 +26,7 @@ import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 interface UserInterface {
+  id: number;
   title: string;
   firstname: string;
   lastname: string;
@@ -41,45 +42,46 @@ interface UserInterface {
 export default function FormPage() {
   const { t } = useTranslation();
   const [form] = Form.useForm();
-  const users: string[] = useAppSelector((state) => state.form.users);
+  const users: UserInterface[] = useAppSelector((state) => state.form.users);
   const selectedUser = useAppSelector((state) => state.form.selectedUser);
-  const storedUsers = JSON.parse(localStorage.getItem("users") || "[]");
   const dispatch = useAppDispatch();
 
-  const onFinish = async (fieldValue: UserInterface) => {
+  const onFinish = (fieldValue: UserInterface) => {
     const values = {
       ...fieldValue,
       birthday: fieldValue["birthday"].format("MM-DD-YYYY"),
     };
 
     if (selectedUser) {
-      await dispatch(editUser({ id: selectedUser, ...values }));
+      dispatch(editUser({ id: selectedUser, ...values }));
     } else {
-      await dispatch(addUser({ id: storedUsers.length + 1, ...values }));
-
-      console.log("users", storedUsers);
+      dispatch(addUser({ ...values, id: users.length + 1 }));
       console.log("value", values);
-      // form.resetFields();
     }
+    form.resetFields();
+    dispatch(setSelectedUser(0));
     window.alert("Save Success");
   };
 
-  const onReset = async () => {
+  const onReset = () => {
     form.resetFields();
-    await dispatch(setSelectedUser(0));
+    dispatch(setSelectedUser(0));
     console.log(selectedUser);
   };
 
   useEffect(() => {
     if (selectedUser) {
-      const user = storedUsers.find((user) => user.id === selectedUser);
+      const user = users.find(
+        (user: { id: number }) => user.id === selectedUser
+      );
       form.setFieldsValue({
         ...user,
-        birthday: dayjs(user.birthday),
+        birthday: dayjs(user?.birthday),
       });
       console.log(selectedUser);
     }
-  }, [selectedUser]);
+  }, [selectedUser, users]);
+
   return (
     <div className="page">
       <header className="header">
