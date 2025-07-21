@@ -164,7 +164,7 @@ function TableSection() {
           position: ["topRight"],
           itemRender: itemRender,
           size: "default",
-          pageSize: 3,
+          pageSize: 10,
         }}
       />
     </Flex>
