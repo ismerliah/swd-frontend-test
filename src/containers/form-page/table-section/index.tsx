@@ -2,6 +2,11 @@
 
 import { useAppDispatch, useAppSelector } from "@/hook";
 import {
+  deleteUser,
+  setDelete,
+  setSelectedUser,
+} from "@/lib/feature/form/formSlice";
+import {
   Button,
   Checkbox,
   Flex,
@@ -11,15 +16,16 @@ import {
   TableColumnsType,
   TableProps,
 } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface UserInterface {
+  id: number;
   title: string;
   firstname: string;
   lastname: string;
   birthday: string;
   nationality: string;
-  citizen_id: number[];
+  citizen_id: string[];
   gender: string;
   mobile_phone: string[];
   passport: string;
@@ -30,7 +36,6 @@ type TableRowSelection<T extends object = object> =
   TableProps<T>["rowSelection"];
 
 interface DataType {
-  key: React.Key;
   name: string;
   gender: string;
   mobile_phone: string;
@@ -39,10 +44,34 @@ interface DataType {
 
 function TableSection() {
   const users = useAppSelector((state) => state.form.users);
+  const isDelete = useAppSelector((state) => state.form.isDelete);
   const dispatch = useAppDispatch();
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [isChecked, setISChecked] = useState(false);
 
-  const columns: TableColumnsType<DataType> = [
+  const handleSelectAll = () => {
+    const allRowData = dataSource.map((item: any) => item.key);
+    setSelectedRowKeys(isChecked ? [] : allRowData);
+    setISChecked(!isChecked);
+  };
+
+  const handleDeleteAll = () => {
+    localStorage.removeItem("users");
+  }
+
+  const handleEdit = (record: any) => {
+    console.log("Edit");
+    dispatch(setSelectedUser(record));
+  };
+
+  const handleDelete = async (record: any) => {
+    await dispatch(deleteUser(record));
+    // dispatch(setDelete(true))
+    window.alert("Delete Success");
+    // dispatch(setDelete(false));
+  };
+
+  const columns = [
     {
       title: "Name",
       dataIndex: "name",
@@ -62,12 +91,22 @@ function TableSection() {
     {
       title: "MANAGE",
       key: "manage",
-      render: () => (
+      render: (record: any) => (
         <Space size="middle">
-          <Button color="default" variant="text">
+          <Button
+            color="default"
+            variant="text"
+            onClick={() => handleEdit(record.key + 1)}
+          >
             EDIT
           </Button>
-          <Button color="default" variant="text">
+          <Button
+            color="default"
+            variant="text"
+            onClick={() => {
+              handleDelete(record.key + 1);
+            }}
+          >
             DELETE
           </Button>
         </Space>
@@ -75,17 +114,14 @@ function TableSection() {
     },
   ];
 
-  // Get data from localStorage
-  const getData = localStorage.getItem("users");
-  const dataSource = getData
-    ? JSON.parse(getData).map((user: any, index: any) => ({
-        key: index,
-        name: `${user.firstname} ${user.lastname}`,
-        gender: user.gender,
-        mobile_phone: `${user.mobile_phone.code}${user.mobile_phone.phone}`,
-        nationality: user.nationality,
-      }))
-    : [];
+  const dataSource =
+    users?.map((user: any, index: any) => ({
+      key: index,
+      name: `${user.firstname} ${user.lastname}`,
+      gender: user.gender,
+      mobile_phone: `${user.mobile_phone.code}${user.mobile_phone.phone}`,
+      nationality: user.nationality,
+    })) ?? [];
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
@@ -96,18 +132,17 @@ function TableSection() {
     onChange: onSelectChange,
   };
 
-  const handleSelectAll = () => {
-    const allRowData = dataSource.map((item : any) => item.key);
-    setSelectedRowKeys(allRowData);
-  };
-
   const itemRender: PaginationProps["itemRender"] = (
     _,
     type,
     originalElement
   ) => {
     if (type === "prev") {
-      return <Button size="small" variant="link" color="default">PREV</Button>;
+      return (
+        <Button size="small" variant="link" color="default">
+          PREV
+        </Button>
+      );
     }
     if (type === "next") {
       return (
@@ -121,10 +156,12 @@ function TableSection() {
   return (
     <Flex gap="middle" vertical>
       <Flex align="center" gap="small">
-        <Checkbox onClick={handleSelectAll}>Select All</Checkbox>
-        <Button variant="outlined">DELETE</Button>
+        <Checkbox checked={isChecked} onClick={handleSelectAll}>
+          Select All
+        </Checkbox>
+        <Button variant="outlined" onClick={handleDeleteAll}>DELETE</Button>
       </Flex>
-      <Table<DataType>
+      <Table
         rowSelection={rowSelection}
         columns={columns}
         dataSource={dataSource}

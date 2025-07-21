@@ -1,13 +1,19 @@
 "use client";
 
 import Title from "antd/es/typography/Title";
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./page.module.scss";
 import { Button, Col, DatePicker, Form, Input, Radio, Row, Select } from "antd";
 import TableSection from "@/containers/form-page/table-section";
 import dayjs from "dayjs";
 import { useAppDispatch, useAppSelector } from "@/hook";
-import { addUser } from "@/lib/feature/form/formSlice";
+import {
+  addUser,
+  editUser,
+  setSelectedUser,
+} from "@/lib/feature/form/formSlice";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 interface UserInterface {
   title: string;
@@ -23,34 +29,62 @@ interface UserInterface {
 }
 
 export default function FormPage() {
+  const {t} = useTranslation();
+  const [form] = Form.useForm();
   const users: string[] = useAppSelector((state) => state.form.users);
+  const selectedUser = useAppSelector((state) => state.form.selectedUser);
+  const storedUsers = JSON.parse(localStorage.getItem("users") || "[]");
   const dispatch = useAppDispatch();
 
-  const onFinish = (fieldValue: UserInterface) => {
+  const onFinish = async (fieldValue: UserInterface) => {
     const values = {
       ...fieldValue,
       birthday: fieldValue["birthday"].format("MM-DD-YYYY"),
     };
-    dispatch(addUser(values));
 
-    console.log("users", users);
-    console.log("value", values);
-    // form.resetFields();
+    if (selectedUser) {
+      await dispatch(editUser({ id: selectedUser, ...values }));
+    } else {
+      await dispatch(addUser({ id: storedUsers.length + 1, ...values }));
+
+      console.log("users", storedUsers);
+      console.log("value", values);
+      // form.resetFields();
+    }
+    window.alert("Save Success");
   };
+
+  const onReset = async () => {
+    form.resetFields();
+    await dispatch(setSelectedUser(0));
+    console.log(selectedUser);
+  };
+
+  useEffect(() => {
+    if (selectedUser) {
+      const user = storedUsers.find((user) => user.id === selectedUser);
+      form.setFieldsValue({
+        ...user,
+        birthday: dayjs(user.birthday),
+      });
+      console.log(selectedUser);
+    }
+  }, [selectedUser]);
   return (
     <div className="page">
       <header>
         <Title level={2}>Form & Table</Title>
+        <LanguageSwitcher/>
       </header>
       <main className={styles.main}>
         <div className={styles.form}>
-          <Form onFinish={onFinish}>
+          <Form form={form} onFinish={onFinish} onReset={onReset}>
             {/* Title , FirstName , LastName */}
             <Row gutter={6}>
               <Col span={4}>
                 <Form.Item
                   name="title"
-                  label="Title"
+                  label={t("HomePage")}
                   rules={[
                     { required: true, message: "Please input your title!" },
                   ]}
@@ -125,9 +159,9 @@ export default function FormPage() {
                   <Select
                     placeholder="-- Please Select --"
                     options={[
-                      { value: "thai", label: "Thai" },
-                      { value: "france", label: "France" },
-                      { value: "ms", label: "American" },
+                      { value: "Thai", label: "Thai" },
+                      { value: "France", label: "France" },
+                      { value: "American", label: "American" },
                     ]}
                   />
                 </Form.Item>
