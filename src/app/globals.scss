@@ -44,6 +44,13 @@ a {
   overflow: auto;
 }
 
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

@@ -1,11 +1,11 @@
 "use client";
 
-import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.scss";
 import { ConfigProvider } from "antd";
 import { Provider } from "react-redux";
 import { store } from "@/lib/store";
+import "../utils/i18n"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

@@ -1,9 +1,10 @@
 "use client";
 
-import { Card, Col, Divider, Flex, Row } from "antd";
+import { Button, Card, Col, Divider, Flex, Row } from "antd";
 import Title from "antd/es/typography/Title";
 import styles from "./page.module.scss";
 import React, { useState } from "react";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function LayoutPage() {
   const [shapeArray, setShapeArray] = useState([
@@ -60,9 +61,13 @@ export default function LayoutPage() {
 
   return (
     <div className="page">
-      <header>
+      <header className="header">
         <Title level={2}>Layout & Style</Title>
+        <LanguageSwitcher />
       </header>
+      <Flex justify="end">
+        <Button href="/">Home</Button>
+      </Flex>
       <main className={styles.main}>
         <Row justify="center" gutter={16}>
           <Col span={7}>

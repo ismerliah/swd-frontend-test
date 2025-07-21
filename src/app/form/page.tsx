@@ -3,7 +3,17 @@
 import Title from "antd/es/typography/Title";
 import React, { useEffect } from "react";
 import styles from "./page.module.scss";
-import { Button, Col, DatePicker, Form, Input, Radio, Row, Select } from "antd";
+import {
+  Button,
+  Col,
+  DatePicker,
+  Flex,
+  Form,
+  Input,
+  Radio,
+  Row,
+  Select,
+} from "antd";
 import TableSection from "@/containers/form-page/table-section";
 import dayjs from "dayjs";
 import { useAppDispatch, useAppSelector } from "@/hook";
@@ -29,7 +39,7 @@ interface UserInterface {
 }
 
 export default function FormPage() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [form] = Form.useForm();
   const users: string[] = useAppSelector((state) => state.form.users);
   const selectedUser = useAppSelector((state) => state.form.selectedUser);
@@ -72,10 +82,13 @@ export default function FormPage() {
   }, [selectedUser]);
   return (
     <div className="page">
-      <header>
+      <header className="header">
         <Title level={2}>Form & Table</Title>
-        <LanguageSwitcher/>
+        <LanguageSwitcher />
       </header>
+      <Flex justify="end">
+        <Button href="/">Home</Button>
+      </Flex>
       <main className={styles.main}>
         <div className={styles.form}>
           <Form form={form} onFinish={onFinish} onReset={onReset}>

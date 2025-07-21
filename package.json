@@ -12,10 +12,12 @@
     "@reduxjs/toolkit": "^2.8.2",
     "antd": "^5.20.6",
     "dayjs": "^1.11.13",
-    "i18next": "^23.15.1",
+    "i18next": "^23.16.8",
     "next": "14.2.12",
+    "next-i18next": "^15.4.2",
     "react": "^18",
     "react-dom": "^18",
+    "react-i18next": "^15.6.0",
     "react-redux": "^9.2.0",
     "redux-toolkit": "^1.1.2"
   },

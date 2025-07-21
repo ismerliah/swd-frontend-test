@@ -1,11 +1,16 @@
+"use client";
+
 import { Flex } from "antd";
 import styles from "./page.module.scss";
 import Link from "next/link";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function Home() {
   return (
     <div className="page">
-      <header></header>
+      <header className="header" style={{ justifyContent: "flex-end" }}>
+        <LanguageSwitcher />
+      </header>
       <main className={styles.main}>
         <Flex justify="center" align="center" gap="large">
           <Link href="/layout" className={styles.box}>
