@@ -15,7 +15,7 @@ import {
   Select,
 } from "antd";
 import TableSection from "@/containers/form-page/table-section";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import { useAppDispatch, useAppSelector } from "@/hook";
 import {
   addUser,
@@ -52,8 +52,10 @@ export default function FormPage() {
       birthday: fieldValue["birthday"].format("MM-DD-YYYY"),
     };
 
+    const { id, ...valuesWithoutId } = values;
+
     if (selectedUser) {
-      dispatch(editUser({ id: selectedUser, ...values }));
+      dispatch(editUser({ id: selectedUser, ...valuesWithoutId }));
     } else {
       dispatch(addUser({ ...values, id: users.length + 1 }));
       console.log("value", values);
